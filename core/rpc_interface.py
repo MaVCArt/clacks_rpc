@@ -1,5 +1,4 @@
 import clacks
-from .decorators import rpc_hidden
 from .cache import retrieve_object
 from clacks import ServerInterface
 
@@ -25,25 +24,21 @@ class ClacksRPCServerInterface(ServerInterface):
         return obj
 
     # ------------------------------------------------------------------------------------------------------------------
-    @rpc_hidden
     def index__(self, guid):
         obj = self.obj_from_guid(guid)
         return obj.__index__()
 
     # ------------------------------------------------------------------------------------------------------------------
-    @rpc_hidden
     def next__(self, guid):
         obj = self.obj_from_guid(guid)
         return obj.__next__()
 
     # ------------------------------------------------------------------------------------------------------------------
-    @rpc_hidden
     def iter__(self, guid):
         obj = self.obj_from_guid(guid)
         return obj.__iter__()
 
     # ------------------------------------------------------------------------------------------------------------------
-    @rpc_hidden
     def call__(self, guid, *args, **kwargs):
         obj = self.obj_from_guid(guid)
 
@@ -59,10 +54,13 @@ class ClacksRPCServerInterface(ServerInterface):
         return obj(*args, **kwargs)
 
     # ------------------------------------------------------------------------------------------------------------------
-    @rpc_hidden
     def getattr__(self, key: str, guid: str):
+        # -- this command should not be nested or called directly
+        if key == 'getattr__':
+            raise AttributeError
+
         obj = self.obj_from_guid(guid)
-        return obj
+        return obj.__getattr__(key)
 
 
 clacks.register_server_interface_type('rpc_core', interface_type=ClacksRPCServerInterface)

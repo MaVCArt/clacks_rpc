@@ -28,10 +28,6 @@ class ClacksRPCObjectProxy(object):
             self.attrs[kw] = kwargs[kw]
 
     # ------------------------------------------------------------------------------------------------------------------
-    def __del__(self):
-        return self.server.question('del__', guid=self.guid).response
-
-    # ------------------------------------------------------------------------------------------------------------------
     def __repr__(self):
         data = json.dumps(self.attrs, sort_keys=True)
         return f'| [ClacksRPCObjectProxy] {data} |'
