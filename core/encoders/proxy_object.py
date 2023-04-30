@@ -1,7 +1,7 @@
 import json
 from uuid import uuid4
+from ..cache import store_object
 from ..proxy_object import ClacksRPCObjectProxy
-from ..cache import store_object, retrieve_object
 from ..rpc_marshaller import ClacksRPCDecoder, ClacksRPCEncoder
 
 
@@ -22,7 +22,7 @@ class ClacksRPCProxyObjectEncoder(ClacksRPCEncoder):
         type_key = 'proxy'
         guid = uuid4().hex
 
-        store_object(value, guid)
+        store_object(obj=value, guid=guid)
 
         data = {
             'guid': guid,

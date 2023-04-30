@@ -4,9 +4,18 @@ import clacks
 
 # ----------------------------------------------------------------------------------------------------------------------
 class ClacksRPCObjectProxy(object):
+    """
+    This class functions as a sort of mini-proxy server. It implements most object magic methods that python works with,
+    and in so doing allows a user to operate on an object that only exists server-side as if the object existed on the
+    client.
+
+    However, this being a `clacks` environment, all RPC calls are routed through the standard command layer, ensuring
+    that most object attributes are inaccessible, unless exposed by an interface method.
+    """
 
     server: clacks.ClientProxyBase
     guid: str
+    attrs: dict
 
     # ------------------------------------------------------------------------------------------------------------------
     def __init__(self, **kwargs):
@@ -17,6 +26,10 @@ class ClacksRPCObjectProxy(object):
 
         for kw in kwargs:
             self.attrs[kw] = kwargs[kw]
+
+    # ------------------------------------------------------------------------------------------------------------------
+    def __del__(self):
+        return self.server.question('del__', guid=self.guid).response
 
     # ------------------------------------------------------------------------------------------------------------------
     def __repr__(self):
