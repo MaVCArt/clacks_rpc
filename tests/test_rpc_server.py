@@ -20,3 +20,6 @@ class TestRPCServer(ClacksTestCase):
     def test_get_proxy(self):
         command = self.client.get_command
         assert isinstance(command, clacks_rpc.ClacksRPCObjectProxy)
+
+    def test_dir(self):
+        assert isinstance(dir(self.client), list)

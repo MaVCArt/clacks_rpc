@@ -1,10 +1,16 @@
-"""
-
-"""
+from typing import Iterable
 from clacks import ClientProxyBase
 
 # ----------------------------------------------------------------------------------------------------------------------
 class ClacksRPCProxyClient(ClientProxyBase):
+
+    # ------------------------------------------------------------------------------------------------------------------
+    def __dir__(self) -> Iterable[str]:
+        result = super(ClacksRPCProxyClient, self).__dir__()
+        server_dir = self.question('getattr__', key='__dir__', guid=None).response
+        result += server_dir()
+        result = sorted(list(set(result)))
+        return result
 
     # ------------------------------------------------------------------------------------------------------------------
     def __getattr__(self, key):
