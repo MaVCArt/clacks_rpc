@@ -1,7 +1,7 @@
 import traceback
 from typing import Type
 from clacks_rpc.core.proxy_object import ClacksRPCObjectProxy
-from clacks.core.marshaller.marshallers.simple import SimplePackageMarshaller, decode_package, encode_package
+from clacks.core.marshaller.marshallers.simple import SimplePackageMarshaller
 
 
 # ----------------------------------------------------------------------------------------------------------------------

@@ -57,10 +57,16 @@ class ClacksRPCServerInterface(ServerInterface):
     def getattr__(self, key: str, guid: str):
         # -- this command should not be nested or called directly
         if key == 'getattr__':
-            raise AttributeError
+            raise AttributeError(key)
 
         obj = self.obj_from_guid(guid)
-        return obj.__getattr__(key)
+        try:
+            return obj.__getattr__(key)
+
+        except AttributeError:
+            self.logger.exception(f'Failed to get attribute {key} on object {obj}!')
+
+        raise AttributeError(key)
 
 
 clacks.register_server_interface_type('rpc_core', interface_type=ClacksRPCServerInterface)
